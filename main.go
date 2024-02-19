@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/namsral/flag"
 	mux "gopkg.in/DataDog/dd-trace-go.v1/contrib/gorilla/mux"
+	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"log"
 	"net/http"
 )
@@ -48,6 +49,10 @@ func main() {
 	flag.StringVar(&host, "host", "", "http host")
 	flag.StringVar(&port, "port", "8080", "http port")
 	flag.Parse()
+
+	tracer.Start(tracer.WithService("meatmap"))
+	defer tracer.Stop()
+
 	r := mux.NewRouter()
 	hotel := newHotel()
 
