@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"github.com/namsral/flag"
+	mux "gopkg.in/DataDog/dd-trace-go.v1/contrib/gorilla/mux"
 	"log"
 	"net/http"
 )
