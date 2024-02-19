@@ -92,7 +92,7 @@ Lib.prettyRoomName = function(roomName, n) {
 
 var PROD_URLS = {
   'localhost:8080': true,
-  'meatmap.fun': true
+  'map.verhoog.ca': true
 };
 Lib.isProd = function(url) {
   return url in PROD_URLS;
