@@ -7,6 +7,9 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
@@ -76,9 +79,17 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	addr := fmt.Sprintf("%s:%s", host, port)
 	log.Printf("listening on %s:%s\n", host, port)
-	err := http.ListenAndServe(addr, nil)
 
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		os.Exit(0)
+	}()
+
+	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+
 }
